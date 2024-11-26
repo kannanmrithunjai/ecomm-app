@@ -4,15 +4,15 @@ const { getCurrentCartState } = require("../cart/cartModel");
 module.exports = {
   validateCoupon: async (code) => {
     try {
-      let cartData = await getCurrentCartState();
       let newTotal = 0;
       let discountAmt = 0;
-      couponCode.map((codeVal) => {
-        if (codeVal.code == code) {
-          discountAmt = (codeVal.disc / 100) * cartData.totalPrice;
-          newTotal = cartData.totalPrice - discountAmt;
-        }
-      });
+      let couponfound = couponCode.find((codeVal) => codeVal.code === code);
+
+      if (couponfound) {
+        let cartData = await getCurrentCartState();
+        discountAmt = (couponfound.disc / 100) * cartData.totalPrice;
+        newTotal = cartData.totalPrice - discountAmt;
+      }
       // return newTotal;
       return {
         UpdatedTotal: newTotal,
